@@ -3,16 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Alumno;
-use App\Models\Grado;
 use App\Models\Profesor;
 
 class EscuelaController extends Controller
 {
-    public function index (){
-        $Alumnos = Alumno::paginate(10); 
-        return view('raizalumno')->with('alumnos', $Alumnos);
-    }
     public function inicio (){
         $Profesors = Profesor::paginate(10);
         return view('inicioprofesor')->with('profesors', $Profesors);

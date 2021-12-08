@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controller\EscuelaController;
-
+use App\Http\Controller\EscuelaController; 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,16 +18,9 @@ use App\Http\Controller\EscuelaController;
 //grupo de rutas para escuela
 Route::group(['Prefix'=>'EscuelaController'],function(){
 
-    //mostrar la lista de alumnos
-    Route::get('/Alumnos', 'EscuelaController@index')
-   ->name('Alumno.index');
- 
    Route::get('/Profesors', 'EscuelaController@inicio')
    ->name('Profesor.inicio');
-   
-   
-
-   Route::get('/Profesors/{id}/editar','EscuelaController@edit')
+      Route::get('/Profesors/{id}/editar','EscuelaController@edit')
 ->name('Profesor.edit')->where('id','[0-9]+');
 Route::put('/Profesors/{id}/editar','EscuelaController@update')
 ->name('Profesor.update')->where('id','[0-9]+');
