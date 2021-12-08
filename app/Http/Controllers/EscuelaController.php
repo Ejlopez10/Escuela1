@@ -11,9 +11,44 @@ class EscuelaController extends Controller
         $Profesors = Profesor::paginate(10);
         return view('inicioprofesor')->with('profesors', $Profesors);
     }
+    public function show ($id){
+        $Profesor = Profesor::findOrfail($id);// muestra un solo estudiante
+        return view('Profesor')->with('profesor',$Profesor);
+    }
     public function edit ($id){
         $Profesor = Profesor::findOrfail($id);
         return view('FormularioDocente')->with('profesor',$Profesor);
+    }
+    public function create(){
+        return view('nuevoProfesor');
+    }
+public function store(Request $request){
+
+    $request->validate([
+        'Nombre'=>'required|alpha',
+        'Clase'=>'required|alpha',
+        'Email'=>'required|alpha',
+        'Telefono'=>'required|numeric', 
+        'Titulo'=>'required|alpha',
+        'Sueldo'=>'required|numeric'
+    ]);
+
+    $nuevoprofesor = new Profesor();
+
+     $nuevoprofesor->Nombre = $request->input('Nombre');
+     $nuevoprofesor->Clase = $request->input('Clase');
+     $nuevoprofesor->Email = $request->input('Email');
+     $nuevoprofesor->Telefono = $request->input('Telefono');
+     $nuevoprofesor->Titulo = $request->input('Titulo');
+     $nuevoprofesor->Sueldo = $request->input('Sueldo');
+
+     $creado = $nuevoprofesor->save();
+     if($creado){
+     return redirect()->route('Profesor.inicio')
+     ->with('mensaje', 'El Docente fue creado exitosamente');
+     }else{
+        //retornar mensaje de error
+     }
     }
     
     public function update(Request $request, $id){
@@ -38,46 +73,15 @@ class EscuelaController extends Controller
          $creado = $profesor ->save();
          if($creado){
          return redirect()->route('Profesor.inicio')
-         ->with('mensaje', 'El Docente fue modificado exitosamente');
+         ->with('mensaje', 'El Alumno fue modificado exitosamente');
          }else{
             //retornar mensaje de error
          }
-        }
-     
-    public function create(){
-        return view('nuevoalumno');
+        }     
+    public function destroy($id) {
+        Profesor::destroy($id);
+        //redirigir 
+        return redirect('/Profesors/')->with('mensaje','Docente borrado completamente');
     }
-    public function store(Request $request){
-
-        $request->validate([
-            'Nombre'=>'required|alpha',
-            'Apellido'=>'required|alpha',
-            'Nacionalidad'=>'required|alpha',
-            'Ciudad'=>'required|alpha',
-            'Fecha_Nacimiento'=>'required|numeric',
-            'identidad'=>'required|unique:alumnos,Identidad',//especificar el nombre de la tabla y columna
-            'Nombre_Tutor'=>'required|alpha',
-            'Curso'=>'required|numeric'
-        ]);
-
-         $nuevoAlumno = new Alumno();//objeto del modelo
-
-         $nuevoAlumno->Nombre = $request->input('Nombre');
-         $nuevoAlumno->Apellido = $request->input('Apellido');
-         $nuevoAlumno->Nacionalidad = $request->input('Nacionalidad');
-         $nuevoAlumno->Ciudad = $request->input('Ciudad');
-         $nuevoAlumno->Fecha_Nacimiento = $request->input('Fecha_Nacimiento');
-         $nuevoAlumno->identidad = $request->input('identidad');
-         $nuevoAlumno->Nombre_Tutor = $request->input('Nombre_Tutor');
-         $nuevoAlumno->Curso = $request->input('Curso');
-
-         $creado = $nuevoAlumno->save();
-         if($creado){
-         return redirect()->route('Alumno.index')
-         ->with('mensaje','El Alumno fue matriculado exitosamente');
-         }else{
-            //retornar mensaje de error
-         }
-    }
-    
+    //
 }
